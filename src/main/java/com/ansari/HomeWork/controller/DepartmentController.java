@@ -1,6 +1,7 @@
 package com.ansari.HomeWork.controller;
 //week twogit
 import com.ansari.HomeWork.dto.DepartmentDto;
+import com.ansari.HomeWork.exception.ResourceNotFoundException;
 import com.ansari.HomeWork.service.DepartmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/departments")
@@ -24,13 +26,15 @@ public class DepartmentController {
     // GET: /departments
     @GetMapping
     public ResponseEntity<List<DepartmentDto>> getAllDepartments() {
-        return new ResponseEntity<>(departmentService.getAllDepartments(), HttpStatus.OK);
+        return ResponseEntity.ok(departmentService.getAllDepartments());
     }
 
     //GET: /departments/{id}
     @GetMapping(path = "/{id}")
     public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable Long id) {
-        return new ResponseEntity<>(departmentService.getDepartmentById(id), HttpStatus.OK);
+        Optional<DepartmentDto> departmentDto = departmentService.getDepartmentById(id);
+        return departmentDto.map(departmentDto1 -> ResponseEntity.ok(departmentDto1))
+                .orElseThrow(() -> new ResourceNotFoundException("department ", id));
 
     }
 
@@ -43,7 +47,7 @@ public class DepartmentController {
     //PUT: /departments/{DepartmentId}
     @PutMapping(path = "/{departmentId}")
     public ResponseEntity<DepartmentDto> updateDepartmentById(@RequestBody DepartmentDto departmentDto, @PathVariable Long id) {
-        return new ResponseEntity<>(departmentService.updateDepartmentById(departmentDto, id), HttpStatus.OK);
+        return ResponseEntity.ok(departmentService.updateDepartmentById(departmentDto, id));
     }
 
     // DELETE: /departments

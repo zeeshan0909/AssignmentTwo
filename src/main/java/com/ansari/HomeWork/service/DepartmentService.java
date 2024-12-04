@@ -35,10 +35,8 @@ public class DepartmentService {
     }
 
     //Get Department By id
-    public DepartmentDto  getDepartmentById(Long id) {
-        Optional<DepartmentEntity> department = departmentRepository.findById(id);
-        return department
-                .map(department1 -> modelMapper.map(department1, DepartmentDto.class)).orElse(null);
+    public Optional<DepartmentDto>  getDepartmentById(Long id) {
+      return departmentRepository.findById(id).map(departmentEntity -> modelMapper.map(departmentEntity, DepartmentDto.class));
     }
 
     //Create Department
