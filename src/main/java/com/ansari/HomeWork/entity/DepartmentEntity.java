@@ -1,5 +1,6 @@
 package com.ansari.HomeWork.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class DepartmentEntity {
 
     private String title;
 
+    @JsonProperty("isActive")
     private boolean isActive;
 
     private LocalDate createdAt;
